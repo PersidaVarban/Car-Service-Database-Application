@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Adăugare autoturism</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #2e2e2e; /* Gri închis */
+            color: #f0f0f0; /* Text deschis pentru contrast */
+        }
+        h2 {
+            color: #007bff; /* Titlul albastru */
+        }
+        div {
+            font-size: 1.2rem; /* Dimensiune font mai mare pentru text */
+        }
+    </style>
+</head>
+<body>
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-10 max-auto rounded border p-4">
+            <h2 class="text-center mb-5">Autoturism nou</h2>
+            <form method="post" th:object="${autoturism}">
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Marcă</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="${autoturism.marca}">
+                        <p th:if="${#fields.hasErrors('marca')}"
+                           th:errorclass="text-danger"
+                           th:errors="${autoturism.marca}"></p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Model</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="${autoturism.model}">
+                        <p th:if="${#fields.hasErrors('model')}"
+                           th:errorclass="text-danger"
+                           th:errors="${autoturism.model}"></p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Caroserie</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="${autoturism.caroserie}">
+                        <p th:if="${#fields.hasErrors('caroserie')}"
+                           th:errorclass="text-danger"
+                           th:errors="${autoturism.caroserie}"></p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">An fabricaţie</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="${autoturism.anFabricatie}">
+                        <p th:if="${#fields.hasErrors('anFabricatie')}"
+                           th:errorclass="text-danger"
+                           th:errors="${autoturism.anFabricatie}"></p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Capacitate cilindrică</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="${autoturism.capacitateCilindrica}">
+                        <p th:if="${#fields.hasErrors('capacitateCilindrica')}"
+                           th:errorclass="text-danger"
+                           th:errors="${autoturism.capacitateCilindrica}"></p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Kilometri</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="${autoturism.kilometri}">
+                        <p th:if="${#fields.hasErrors('kilometri')}"
+                           th:errorclass="text-danger"
+                           th:errors="${autoturism.kilometri}"></p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Culoare</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="${autoturism.culoare}">
+                        <p th:if="${#fields.hasErrors('culoare')}"
+                           th:errorclass="text-danger"
+                           th:errors="${autoturism.culoare}"></p>
+                    </div>
+                </div>
+
+                <h3 class="my-4">Informații Client</h3>
+                <div class="mb-3">
+                    <label for="client" class="form-label">Client existent</label>
+                    <select id="client" name="idClient" class="form-select">
+                        <option value="" disabled selected>Selectează un client</option>
+                        <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.nume + ' ' + client.prenume + ' ' + client.telefon}"></option>
+                    </select>
+                </div>
+
+                <!-- Câmpuri pentru un client nou -->
+                <div class="mb-3">
+                    <label for="numeClient" class="form-label">Nume Client Nou</label>
+                    <input type="text" id="numeClient" name="numeClient" class="form-control" placeholder="Introduceți numele noului client">
+                </div>
+                <div class="mb-3">
+                    <label for="prenumeClient" class="form-label">Prenume Client Nou</label>
+                    <input type="text" id="prenumeClient" name="prenumeClient" class="form-control" placeholder="Introduceți prenumele noului client">
+                </div>
+                <div class="mb-3">
+                    <label for="telefon" class="form-label">Telefon Client Nou</label>
+                    <input type="text" id="telefon" name="telefon" class="form-control" placeholder="Introduceți telefonul noului client">
+                </div>
+
+                <div class="row">
+                    <div class="offset-sm-4 col-sm-4 d-grid">
+                        <button type="submit" class="btn btn-secondary">Adaugă</button>
+                    </div>
+                    <div class="col-sm-4 d-grid">
+                        <a class="btn btn-outline-light" href="/autoturisme">Înapoi</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

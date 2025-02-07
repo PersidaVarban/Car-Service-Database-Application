@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revizii și Statistici</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #2e2e2e;
+            color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+        }
+        h1, h2, h3 {
+            color: #00aaff; /* Albastru deschis pentru titluri */
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); /* Efect de umbră pentru text */
+        }
+        .card {
+            background-color: #3a3f44;
+            border: 1px solid #4e5865;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .card h3 {
+            margin-bottom: 15px;
+            border-bottom: 2px solid #00aaff;
+            padding-bottom: 10px;
+        }
+        p {
+            color: #f0f0f0;
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+        .btn-back {
+            background-color: #00aaff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-back:hover {
+            background-color: #0077cc;
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+<div class="container my-5">
+    <h1 class="text-center">Revizii și Statistici</h1>
+    <h2 class="text-center" th:text="${autoturism.marca} + ' ' + ${autoturism.model}"></h2>
+
+    <div class="card">
+        <h3>Statistici:</h3>
+        <p><strong>Total Reparații:</strong> <span th:text="${statistici['total_reparatii']}"></span></p>
+        <p><strong>Total Cost Reparații:</strong> <span th:text="${statistici['total_cost']} + ' RON'"></span></p>
+        <p><strong>Ultima Reparație:</strong> <span th:text="${statistici['ultima_reparatie']}"></span></p>
+    </div>
+
+    <!-- Buton Înapoi -->
+    <div class="text-center mt-4">
+        <a href="/autoturisme" class="btn btn-back">Înapoi</a>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

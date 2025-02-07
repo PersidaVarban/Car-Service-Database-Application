@@ -1,0 +1,111 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Adaugă Factură</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #2e2e2e; /* Fundal întunecat */
+            color: #f8f9fa; /* Text deschis */
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 600px;
+        }
+        h1 {
+            color: #007bff; /* Titlu albastru */
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-control {
+            border-radius: 5px;
+            background-color: #212529; /* Fundal mai deschis pentru câmp */
+            color: #ffffff; /* Text alb */
+            border: 1px solid #495057; /* Linie gri-închis */
+        }
+        .form-control::placeholder {
+            color: #e0e0e0; /* Placeholder deschis */
+        }
+        .form-control:focus {
+            background-color: #212529;
+            color: #ffffff; /* Text alb clar */
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            background-color: #007bff; /* Albastru intens */
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Albastru mai închis la hover */
+        }
+        .btn-secondary {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            background-color: #6c757d; /* Gri pentru butonul Înapoi */
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Gri mai închis la hover */
+        }
+        .card {
+            border-radius: 10px;
+            background-color: #1c1e22; /* Card întunecat */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #f8f9fa;
+        }
+        .card-header {
+            text-align: center;
+            color: #f8f9fa; /* Text deschis */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Adaugă Factură
+        </div>
+        <div class="card-body">
+            <h1>Client: <span th:text="${client.nume + ' ' + client.prenume}"></span></h1>
+            <form th:action="@{/clienti/addfacturi/{id}(id=${client.id})}" method="post">
+                <!-- Selectare Autoturism -->
+                <div class="mb-3">
+                    <label for="autoturism" class="form-label">Autoturism:</label>
+                    <select id="autoturism" name="idAutoturism" class="form-control" required>
+                        <option value="" disabled selected>Selectează autoturismul</option>
+                        <option th:each="autoturism : ${autoturisme}"
+                                th:value="${autoturism.id}"
+                                th:text="${autoturism.marca + ' ' + autoturism.model + ' (' + autoturism.culoare + ')'}">
+                        </option>
+                    </select>
+                </div>
+                <!-- Data Facturii -->
+                <div class="mb-3">
+                    <label for="dataFactura" class="form-label">Data Facturii:</label>
+                    <input type="date" id="dataFactura" name="dataFactura" class="form-control" required />
+                </div>
+                <!-- Suma -->
+                <div class="mb-3">
+                    <label for="suma" class="form-label">Suma:</label>
+                    <input type="number" id="suma" name="suma" class="form-control" step="0.01" required />
+                </div>
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary">Salvează Factura</button>
+            </form>
+
+            <!-- Buton Înapoi -->
+            <div class="mt-3">
+                <a th:href="@{/clienti}" class="btn btn-secondary">Înapoi</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

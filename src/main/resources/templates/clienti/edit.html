@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editează Client</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #2e2e2e; /* Gri închis */
+            color: #f0f0f0; /* Text deschis pentru contrast */
+        }
+        h2 {
+            color: #007bff; /* Titlul albastru */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Umbră subtilă */
+        }
+        .form-container {
+            background-color: #3a3a3a; /* Fundal gri mediu */
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5); /* Umbră */
+        }
+        label {
+            color: #f0f0f0; /* Text alb pentru etichete */
+        }
+        .form-control {
+            background-color: #4a4a4a; /* Fundal gri închis pentru câmpuri */
+            color: #f0f0f0; /* Text alb */
+            border: 1px solid #007bff; /* Bordură albastră */
+        }
+        .form-control:focus {
+            background-color: #4a4a4a;
+            color: #f0f0f0;
+            border-color: #0056b3; /* Bordură albastră închisă la focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.8); /* Efect de focus */
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Albastru mai închis la hover */
+            transform: scale(1.05); /* Efect de mărire */
+        }
+        .btn-outline-primary {
+            border: 1px solid #007bff; /* Bordură albastră */
+            color: #007bff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #f0f0f0; /* Text alb */
+        }
+    </style>
+</head>
+<body>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 form-container">
+            <h2 class="text-center mb-5">Editează Client</h2>
+            <form th:action="@{/clienti/edit}" th:object="${client}" method="post">
+                <input type="hidden" name="id" th:value="${client.id}">
+                <div class="mb-4">
+                    <label for="nume" class="form-label">Nume</label>
+                    <input id="nume" class="form-control" th:field="${client.nume}" placeholder="Introduceți numele">
+                    <p th:if="${#fields.hasErrors('nume')}" th:errorclass="text-danger" th:errors="${client.nume}"></p>
+                </div>
+
+                <div class="mb-4">
+                    <label for="prenume" class="form-label">Prenume</label>
+                    <input id="prenume" class="form-control" th:field="${client.prenume}" placeholder="Introduceți prenumele">
+                    <p th:if="${#fields.hasErrors('prenume')}" th:errorclass="text-danger" th:errors="${client.prenume}"></p>
+                </div>
+
+                <div class="mb-4">
+                    <label for="telefon" class="form-label">Telefon</label>
+                    <input id="telefon" class="form-control" th:field="${client.telefon}" placeholder="Introduceți numărul de telefon">
+                    <p th:if="${#fields.hasErrors('telefon')}" th:errorclass="text-danger" th:errors="${client.telefon}"></p>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary px-4">Salvează</button>
+                    <a class="btn btn-outline-primary px-4" href="/clienti">Înapoi</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalii Autoturism</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #2e2e2e;
+            color: #f5f5f5; /* Text alb implicit */
+        }
+        h1, h2, h4, h5, h6 {
+            color: #007bff; /* Titluri albastre */
+        }
+        .card {
+            background-color: #3e3e3e;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            color: #f5f5f5; /* Text alb în card-uri */
+        }
+        .card-header {
+            background-color: #4e4e4e;
+            color: #ffffff;
+            font-weight: bold;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+        }
+        .list-group-item {
+            background-color: #4e4e4e;
+            color: #f5f5f5; /* Text alb */
+            border: none;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        span, p {
+            color: #f5f5f5 !important; /* Forțăm text alb */
+        }
+        .text-white {
+            color: #ffffff !important; /* Text alb cu !important pentru a forța stilul */
+        }
+        strong {
+            color: #f5f5f5; /* Text alb pentru etichete precum "An fabricație" */
+        }
+        input, textarea {
+            background-color: #3e3e3e; /* Fundal gri */
+            color: #f5f5f5; /* Text alb */
+            border: 1px solid #6c757d; /* Bordură neutră */
+            border-radius: 5px;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #007bff; /* Bordură albastră la focus */
+        }
+        .btn {
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+        }
+        .btn:hover {
+            background-color: #5a6268;
+        }
+        .btn-back {
+            margin-bottom: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Detalii Autoturism</h1>
+
+    <!-- Detalii autoturism -->
+    <div class="card">
+        <div class="card-header">
+            <h4 th:text="${autoturism.marca} + ' ' + ${autoturism.model}"></h4>
+        </div>
+        <div class="card-body">
+            <p><strong>An fabricație:</strong> <span th:text="${autoturism.anFabricatie}"></span></p>
+            <p><strong>Culoare:</strong> <span th:text="${autoturism.culoare}"></span></p>
+            <p><strong>Kilometri:</strong> <span th:text="${autoturism.kilometri}"></span></p>
+            <p><strong>Capacitate cilindrică:</strong> <span th:text="${autoturism.capacitateCilindrica}"></span></p>
+        </div>
+    </div>
+
+    <!-- Detalii client -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Client</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Nume:</strong> <span th:text="${client.nume}"></span> <span th:text="${client.prenume}"></span></p>
+            <p><strong>Telefon:</strong> <span th:text="${client.telefon}"></span></p>
+        </div>
+    </div>
+
+    <!-- Programări și reparații -->
+    <h2 class="mt-4">Programări și Reparații</h2>
+    <div th:if="${programariGrupate.isEmpty()}">
+        <p class="text-muted text-white">Nu există programări înregistrate pentru acest autoturism.</p>
+    </div>
+    <div th:each="programare : ${programariGrupate}" class="card">
+        <div class="card-header">
+            <h5>Programare - <span th:text="${programare['data_programare']}"></span></h5>
+        </div>
+        <div class="card-body">
+            <h6>Reparații</h6>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="reparatie : ${programare['reparatii']}">
+                    <strong>Tip:</strong> <span th:text="${reparatie['tip_reparatie']}"></span><br>
+                    <strong>Data:</strong> <span th:text="${reparatie['data_reparatie']}"></span><br>
+                    <strong>Garanție:</strong> <span th:text="${reparatie['garantie']}"></span><br>
+                    <strong>Piese:</strong> <span th:text="${reparatie['piese']}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Buton de întoarcere -->
+    <div class="text-center mt-4">
+        <a href="/autoturisme" class="btn btn-secondary btn-back">Înapoi</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

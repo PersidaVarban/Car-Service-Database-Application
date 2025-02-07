@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Autoturisme</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #2e2e2e; /* Gri închis */
+            color: #f0f0f0; /* Text deschis pentru contrast */
+        }
+        h1 {
+            color: #007bff; /* Titlul albastru */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Umbră subtilă */
+        }
+        .table {
+            margin-top: 50px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table th {
+            background-color: #007bff; /* Albastru */
+            color: #f0f0f0; /* Text alb */
+            font-size: 1.2rem;
+        }
+        .table td {
+            font-size: 1rem;
+            background-color: #d3d3d3; /* Gri deschis */
+            color: #2e2e2e; /* Text închis */
+        }
+        .btn-custom {
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+        }
+        .btn-primary, .btn-success, .btn-danger, .btn-info, .btn-warning {
+            font-size: 0.9rem;
+            margin: 5px;
+        }
+        .btn-center {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Albastru mai închis */
+        }
+        .btn-danger:hover {
+            background-color: #b30000; /* Roșu mai închis */
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            color: #f0f0f0;
+        }
+        .btn-info:hover {
+            background-color: #117a8b; /* Albastru-cenușiu */
+        }
+        .btn-warning:hover {
+            background-color: #e0a800; /* Galben mai închis */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center my-4">Autoturisme</h1>
+
+    <!-- Buton pentru adăugarea unui autoturism -->
+    <div class="text-center">
+        <a class="btn btn-success btn-custom" href="/autoturisme/add">Adaugă autoturism</a>
+    </div>
+
+    <!-- Tabel cu autoturisme -->
+    <table class="table table-hover text-center">
+        <thead>
+        <tr>
+            <th>Marcă</th>
+            <th>Model</th>
+            <th>Caroserie</th>
+            <th>An fabricație</th>
+            <th>Capacitate cilindrică</th>
+            <th>Kilometri</th>
+            <th>Culoare</th>
+            <th>Opțiuni</th>
+            <th>Detalii</th>
+            <th>Programări</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="autoturism : ${autoturisme}">
+            <td th:text="${autoturism.marca}"></td>
+            <td th:text="${autoturism.model}"></td>
+            <td th:text="${autoturism.caroserie}"></td>
+            <td th:text="${autoturism.anFabricatie}"></td>
+            <td th:text="${autoturism.capacitateCilindrica}"></td>
+            <td th:text="${autoturism.kilometri}"></td>
+            <td th:text="${autoturism.culoare}"></td>
+            <td style="white-space: nowrap">
+                <!-- Buton pentru editare -->
+                <a class="btn btn-primary"
+                   th:href="@{/autoturisme/edit/{id}(id=${autoturism.id})}">Editează</a>
+
+                <!-- Formular pentru ștergere -->
+                <form th:action="@{/autoturisme/delete/{id}(id=${autoturism.id})}" method="post" style="display:inline;">
+                    <button class="btn btn-danger" type="submit" onclick="return confirm('Ești sigur că vrei să ștergi acest autoturism?')">Șterge</button>
+                </form>
+            </td>
+            <td>
+                <a class="btn btn-info" th:href="@{/autoturisme/details/{id}(id=${autoturism.id})}">Detalii</a>
+            </td>
+            <td>
+                <a class="btn btn-warning" th:href="@{/autoturisme/programare/{id}(id=${autoturism.id})}">Adaugă Programare</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container form-container">
+    <h3>Selectează un autoturism pentru mai multe informații</h3>
+
+    <!-- Formular pentru selectarea autoturismului și redirecționare către reparatii/{id} -->
+    <form id="autoturismForm" method="get" action="#">
+        <div class="mb-3">
+            <select name="id" id="autoturismDropdown" class="form-select" required>
+                <option value="" disabled selected>Selectează un autoturism</option>
+                <option th:each="autoturism : ${autoturisme}"
+                        th:value="${autoturism.id}"
+                        th:text="${autoturism.marca + ' ' + autoturism.model + ' (' + autoturism.anFabricatie + ')'}">
+                </option>
+            </select>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary" type="button" onclick="redirectToReparatii()">Vezi Angajații și Reparațiile</button>
+            <button class="btn btn-warning" type="button" onclick="redirectToRevizii()">Vezi Statistici</button>
+            <button class="btn btn-primary" type="button" onclick="redirectToProgramariViitoare()">Vezi Programările Viitoare</button>
+        </div>
+    </form>
+</div>
+<div class="container mt-5">
+    <h3>Filtrează autoturismele după numărul de programări</h3>
+    <!-- Formular pentru selectarea numărului minim de programări -->
+    <form method="get" action="/autoturisme/filtrare">
+        <div class="mb-3">
+            <label for="numarProgramari" class="form-label">Număr minim de programări:</label>
+            <input type="number" id="numarProgramari" name="numarProgramari" class="form-control" min="1" required>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Afișează Autoturismele</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function redirectToReparatii() {
+        const selectedId = document.getElementById('autoturismDropdown').value;
+        if (selectedId) {
+            window.location.href = '/autoturisme/angajatisireparatii/' + selectedId;
+        } else {
+            alert("Te rog să selectezi un autoturism!");
+        }
+    }
+    function redirectToRevizii() {
+        const selectedId = document.getElementById('autoturismDropdown').value;
+        if (selectedId) {
+            window.location.href = '/autoturisme/revizii/' + selectedId;
+        } else {
+            alert("Te rog să selectezi un autoturism!");
+        }
+    }
+    function redirectToProgramariViitoare() {
+        const selectedId = document.getElementById('autoturismDropdown').value;
+        if (selectedId) {
+            window.location.href = '/autoturisme/programari-viitoare/' + selectedId;
+        } else {
+            alert("Te rog să selectezi un autoturism!");
+        }
+    }
+</script>
+
+
+<!-- Buton pentru revenire la pagina principală -->
+<div class="btn-center">
+    <a class="btn btn-primary" href="/">Înapoi la pagina principală</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

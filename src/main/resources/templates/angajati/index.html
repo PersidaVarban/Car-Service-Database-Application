@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PD Service</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #2e2e2e; /* Gri închis */
+            color: #f0f0f0; /* Text deschis pentru contrast */
+            font-family: 'Arial', sans-serif;
+        }
+        h1 {
+            color: #007bff; /* Titlul albastru */
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+        .table {
+            margin-top: 50px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table th {
+            background-color: #007bff; /* Albastru */
+            color: #f0f0f0; /* Text alb */
+            font-size: 1.2rem;
+        }
+        .table td {
+            font-size: 1rem;
+            background-color: #d3d3d3; /* Gri deschis */
+            color: #2e2e2e; /* Text închis */
+        }
+        .btn-success, .btn-primary, .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-success:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(0, 255, 0, 0.4);
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4);
+        }
+        .btn-danger:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(255, 0, 0, 0.4);
+        }
+        .btn-center {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .btn-center a {
+            font-size: 1.25rem;
+            padding: 10px 30px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">Angajați</h1>
+    <!-- Buton pentru adăugarea unui angajat -->
+    <div class="text-end mb-3">
+        <a class="btn btn-success" href="/angajati/add">Adaugă angajat</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nume</th>
+            <th>Prenume</th>
+            <th>Profesie</th>
+            <th>Salariu</th>
+            <th>Reparații Asociate</th>
+            <th>Adăugare Reparație</th>
+            <th>Opțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="angajat : ${angajati}">
+            <td th:text="${angajat.nume}"></td>
+            <td th:text="${angajat.prenume}"></td>
+            <td th:text="${angajat.profesie}"></td>
+            <td th:text="${angajat.salariu}"></td>
+
+            <!-- Coloana pentru vizualizarea reparațiilor -->
+            <td>
+                <a class="btn btn-info" th:href="@{/angajati/reparatii/{id}(id=${angajat.id})}">Vezi Reparatii</a>
+            </td>
+
+            <!-- Coloana pentru adăugarea unei reparații -->
+            <td>
+                <a class="btn btn-warning" th:href="@{/angajati/addreparatii/{id}(id=${angajat.id})}">Adaugă Reparatie</a>
+            </td>
+
+            <!-- Coloana pentru opțiuni (editare/ștergere) -->
+            <td class="text-center">
+                <a class="btn btn-primary me-2"
+                   th:href="@{/angajati/edit/{id}(id=${angajat.id})}">Editează</a>
+
+                <form th:action="@{/angajati/delete/{id}(id=${angajat.id})}" method="post" style="display:inline;">
+                    <button class="btn btn-danger" type="submit" onclick="return confirm('Ești sigur că vrei să ștergi acest angajat?')">Șterge</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container form-container my-5">
+    <h3 class="text-center">Selectează un angajat pentru a vedea numărul total de reparații</h3>
+
+    <!-- Formular pentru selectarea angajatului -->
+    <form id="angajatForm" method="get" action="#">
+        <div class="mb-3">
+            <select name="id" id="angajatDropdown" class="form-select" required>
+                <option value="" disabled selected>Selectează un angajat</option>
+                <option th:each="angajat : ${angajati}"
+                        th:value="${angajat.id}"
+                        th:text="${angajat.nume} + ' ' + ${angajat.prenume}">
+                </option>
+            </select>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-secondary" type="button" onclick="redirectToTotalReparatii()">Vezi Numarul Total de Reparații</button>
+        </div>
+    </form>
+</div>
+<div class="text-center my-4">
+    <a href="/angajati/media" class="btn btn-info">Angajați cu Reparații Peste Media</a>
+</div>
+
+<script>
+    function redirectToTotalReparatii() {
+        const selectedId = document.getElementById('angajatDropdown').value;
+        if (selectedId) {
+            window.location.href = '/angajati/total/' + selectedId;
+        } else {
+            alert("Te rog să selectezi un angajat!");
+        }
+    }
+</script>
+
+<div class="btn-center">
+    <a class="btn btn-primary" href="/">Înapoi la pagina principală</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
