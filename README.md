@@ -1,4 +1,4 @@
-# Auto Service Management Application (PD Service)
+# Car Service Management Application (PD Service)
 The application manages data related to clients, vehicles, repairs, employees, and appointments for the PD Service auto center. Users can schedule appointments, generate invoices, and manage all related information through an integrated database system.
 ## Key Features
 - Access and manage the list of clients, vehicles, employees, and appointments
